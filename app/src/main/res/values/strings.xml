@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ScreenLog</string>
+    <string name="title_home">Nyumbani (Home)</string>
+    <string name="title_search">Tafuta (Search)</string>
+    <string name="title_log">Weka Kumbukumbu (Log)</string>
+    <string name="title_discover">Gundua (Discover)</string>
+    <string name="title_profile">Wasifu (Profile)</string>
+    <string name="title_recommendations">Mapendekezo (For You)</string>
+    <string name="title_analytics">Takwimu (Analytics)</string>
+    <string name="title_moderation">Usimamizi (Moderation)</string>
+    
+    <string name="login">Ingia (Login)</string>
+    <string name="register">Jisajili (Register)</string>
+    <string name="email">Barua Pepe (Email)</string>
+    <string name="password">Nenosiri (Password)</string>
+    
+    <string name="local_content_badge">KFCB / LOCAL</string>
+</resources>

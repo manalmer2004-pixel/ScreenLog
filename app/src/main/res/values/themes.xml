@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.ScreenLog" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary_amber</item>
+        <item name="android:statusBarColor">@color/background_near_black</item>
+        <item name="android:navigationBarColor">@color/background_near_black</item>
+    </style>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_amber">#FFC107</color>
+    <color name="primary_dark_amber">#FF8F00</color>
+    <color name="background_near_black">#0B0E14</color>
+    <color name="card_dark_gray">#1A1F2C</color>
+    <color name="text_light_white">#F5F6F8</color>
+    <color name="text_muted_gray">#8E9AA8</color>
+    <color name="accent_green">#4CAF50</color>
+    <color name="error_red">#EF5350</color>
+</resources>

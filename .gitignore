@@ -1,0 +1,27 @@
+# Android studio / IntelliJ files
+.idea/
+*.iml
+.gradle/
+build/
+captures/
+local.properties
+.navigation/
+
+# Proguard / Crash reports
+crashlytics/
+*.apk
+*.aar
+
+# OS / build files
+/app/build/
+/app/google-services.json
+
+# Firebase Functions
+/functions/lib/
+/functions/node_modules/
+/functions/.runtimeconfig.json
+/functions/package-lock.json
+
+# Environment files
+.env
+.env.local

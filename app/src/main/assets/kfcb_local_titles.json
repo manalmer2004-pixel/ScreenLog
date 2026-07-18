@@ -1,0 +1,90 @@
+[
+  {
+    "registryId": "kfcb-001",
+    "titleName": "Nairobi Half Life",
+    "countryCode": "KE",
+    "year": 2012,
+    "type": "movie",
+    "tmdbId": "141045",
+    "source": "KFCB/local registry seed",
+    "isLocalContent": true,
+    "languages": ["Swahili", "English"]
+  },
+  {
+    "registryId": "kfcb-002",
+    "titleName": "Supa Modo",
+    "countryCode": "KE",
+    "year": 2018,
+    "type": "movie",
+    "tmdbId": "495449",
+    "source": "KFCB/local registry seed",
+    "isLocalContent": true,
+    "languages": ["Swahili", "Kikuyu", "English"]
+  },
+  {
+    "registryId": "kfcb-003",
+    "titleName": "Disconnect",
+    "countryCode": "KE",
+    "year": 2018,
+    "type": "movie",
+    "tmdbId": "551225",
+    "source": "KFCB/local registry seed",
+    "isLocalContent": true,
+    "languages": ["English", "Swahili"]
+  },
+  {
+    "registryId": "kfcb-004",
+    "titleName": "Subira",
+    "countryCode": "KE",
+    "year": 2018,
+    "type": "movie",
+    "tmdbId": "565012",
+    "source": "KFCB/local registry seed",
+    "isLocalContent": true,
+    "languages": ["Swahili", "English"]
+  },
+  {
+    "registryId": "kfcb-005",
+    "titleName": "Mission to Rescue",
+    "countryCode": "KE",
+    "year": 2021,
+    "type": "movie",
+    "tmdbId": "843105",
+    "source": "KFCB/local registry seed",
+    "isLocalContent": true,
+    "languages": ["Swahili", "English"]
+  },
+  {
+    "registryId": "kfcb-006",
+    "titleName": "Softie",
+    "countryCode": "KE",
+    "year": 2020,
+    "type": "movie",
+    "tmdbId": "653738",
+    "source": "KFCB/local registry seed",
+    "isLocalContent": true,
+    "languages": ["English", "Swahili"]
+  },
+  {
+    "registryId": "kfcb-007",
+    "titleName": "County 49",
+    "countryCode": "KE",
+    "year": 2022,
+    "type": "tv",
+    "tmdbId": "210405",
+    "source": "KFCB/local registry seed",
+    "isLocalContent": true,
+    "languages": ["Swahili", "English"]
+  },
+  {
+    "registryId": "kfcb-008",
+    "titleName": "Single Kiasi",
+    "countryCode": "KE",
+    "year": 2022,
+    "type": "tv",
+    "tmdbId": "157404",
+    "source": "KFCB/local registry seed",
+    "isLocalContent": true,
+    "languages": ["Swahili", "English"]
+  }
+]
