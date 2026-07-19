@@ -10,8 +10,16 @@ interface TitleRepository {
     suspend fun getTitleDetails(titleType: String, tmdbId: String): Resource<Title>
     fun getTitleDetailsFlow(titleType: String, tmdbId: String): Flow<Title?>
     suspend fun getTitleReviews(titleId: String): Resource<List<Review>>
-    suspend fun submitReview(titleId: String, rating: Int, text: String, language: String, containsSpoilers: Boolean): Resource<Review>
+    suspend fun submitReview(
+        titleId: String,
+        rating: Int,
+        text: String,
+        language: String,
+        containsSpoilers: Boolean,
+        reviewId: String? = null
+    ): Resource<Review>
     suspend fun deleteReview(titleId: String, reviewId: String): Resource<Unit>
+    suspend fun flagReview(titleId: String, reviewId: String, reason: String): Resource<Unit>
     suspend fun getMoviesByGenre(genreId: String): Resource<List<Title>>
     suspend fun getTvShowsByGenre(genreId: String): Resource<List<Title>>
 }

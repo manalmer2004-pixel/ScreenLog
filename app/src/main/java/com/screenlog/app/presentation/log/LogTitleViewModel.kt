@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 data class LogTitleUiState(
@@ -64,6 +65,8 @@ class LogTitleViewModel @Inject constructor(
 
     fun submitLog(onSuccess: () -> Unit) {
         val titleObj = _uiState.value.title ?: return
+        val sharedId = UUID.randomUUID().toString()
+
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             
@@ -78,7 +81,8 @@ class LogTitleViewModel @Inject constructor(
                 reviewText = _uiState.value.reviewText,
                 languageCode = _uiState.value.languageCode,
                 containsSpoilers = _uiState.value.containsSpoilers,
-                watchedDate = System.currentTimeMillis()
+                watchedDate = System.currentTimeMillis(),
+                logId = sharedId
             )
 
             when (result) {
@@ -92,7 +96,8 @@ class LogTitleViewModel @Inject constructor(
                             rating = _uiState.value.rating,
                             text = _uiState.value.reviewText,
                             language = _uiState.value.languageCode,
-                            containsSpoilers = _uiState.value.containsSpoilers
+                            containsSpoilers = _uiState.value.containsSpoilers,
+                            reviewId = sharedId
                         )
                     }
                     onSuccess()

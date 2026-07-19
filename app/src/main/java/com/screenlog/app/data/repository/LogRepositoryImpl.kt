@@ -8,6 +8,7 @@ import com.screenlog.app.data.mapper.toDomain
 import com.screenlog.app.data.mapper.toEntity
 import com.screenlog.app.data.remote.firebase.FirestoreDataSource
 import com.screenlog.app.domain.model.LogEntry
+import com.screenlog.app.domain.model.Review
 import com.screenlog.app.domain.model.SyncStatus
 import com.screenlog.app.domain.repository.LogRepository
 import kotlinx.coroutines.flow.Flow
@@ -39,14 +40,15 @@ class LogRepositoryImpl @Inject constructor(
         reviewText: String?,
         languageCode: String?,
         containsSpoilers: Boolean,
-        watchedDate: Long
+        watchedDate: Long,
+        logId: String?
     ): Resource<LogEntry> {
         val uid = firebaseAuth.currentUser?.uid ?: return Resource.Error("Unauthorized")
-        val logId = UUID.randomUUID().toString()
+        val finalLogId = logId ?: UUID.randomUUID().toString()
         val titleId = "${titleType}_${tmdbId}"
 
         val logEntry = LogEntry(
-            id = logId,
+            id = finalLogId,
             userId = uid,
             titleId = titleId,
             tmdbId = tmdbId,
@@ -70,10 +72,10 @@ class LogRepositoryImpl @Inject constructor(
         // Try syncing to Firestore
         return try {
             firestoreDataSource.saveWatchedLog(logEntry.copy(syncStatus = SyncStatus.SYNCED))
-            logDao.updateSyncStatus(logId, "SYNCED")
+            logDao.updateSyncStatus(finalLogId, "SYNCED")
             Resource.Success(logEntry.copy(syncStatus = SyncStatus.SYNCED))
         } catch (e: Exception) {
-            logDao.updateSyncStatus(logId, "FAILED")
+            logDao.updateSyncStatus(finalLogId, "FAILED")
             Resource.Success(logEntry.copy(syncStatus = SyncStatus.FAILED))
         }
     }
@@ -115,14 +117,20 @@ class LogRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteLog(userId: String, logId: String): Resource<Unit> {
+    override suspend fun deleteLog(userId: String, logId: String, titleId: String?): Resource<Unit> {
         return try {
+            // Delete private log
             firestoreDataSource.deleteWatchedLog(userId, logId)
+            
+            // Delete public review if titleId is known (we use logId as reviewId now)
+            if (titleId != null) {
+                firestoreDataSource.deleteReview(titleId, logId)
+            }
+            
             logDao.deleteLogById(logId)
             Resource.Success(Unit)
         } catch (e: Exception) {
-            // Even if network fails, we can delete locally and mark for deletion sync if we had that system
-            // For now, simpler:
+            // Even if network fails, we can delete locally
             logDao.deleteLogById(logId)
             Resource.Success(Unit)
         }
@@ -134,6 +142,29 @@ class LogRepositoryImpl @Inject constructor(
             logDao.insertLog(updatedLog.toEntity()) // Room handles update with onConflictReplace
             
             firestoreDataSource.saveWatchedLog(updatedLog.copy(syncStatus = SyncStatus.SYNCED))
+            
+            // Also update the public review if it exists (using log.id as reviewId)
+            if (!log.reviewText.isNullOrBlank()) {
+                val userProfile = firestoreDataSource.getUserProfile(log.userId)
+                val review = Review(
+                    id = log.id,
+                    userId = log.userId,
+                    userName = userProfile.displayName,
+                    titleId = log.titleId,
+                    rating = log.rating,
+                    reviewText = log.reviewText,
+                    languageCode = log.languageCode ?: "en",
+                    containsSpoilers = log.containsSpoilers,
+                    flagged = false,
+                    flagReason = null,
+                    createdAt = log.createdAt
+                )
+                firestoreDataSource.submitReview(log.titleId, review)
+            } else {
+                // If they cleared the review text, we might want to delete the public review
+                firestoreDataSource.deleteReview(log.titleId, log.id)
+            }
+
             logDao.updateSyncStatus(log.id, "SYNCED")
             Resource.Success(updatedLog.copy(syncStatus = SyncStatus.SYNCED))
         } catch (e: Exception) {

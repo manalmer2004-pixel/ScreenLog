@@ -84,4 +84,20 @@ class TitleDetailViewModel @Inject constructor(
             }
         }
     }
+
+    fun flagReview(reviewId: String, reason: String) {
+        val titleId = _uiState.value.title?.id ?: return
+        viewModelScope.launch {
+            val result = titleRepository.flagReview(titleId, reviewId, reason)
+            if (result is Resource.Success) {
+                // Refresh reviews to show flagged status if needed
+                val reviewsResult = titleRepository.getTitleReviews(titleId)
+                if (reviewsResult is Resource.Success) {
+                    _uiState.update { it.copy(reviews = reviewsResult.data) }
+                }
+            } else if (result is Resource.Error) {
+                _uiState.update { it.copy(error = "Failed to report: ${result.message}") }
+            }
+        }
+    }
 }

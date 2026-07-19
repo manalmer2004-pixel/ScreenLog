@@ -1,5 +1,6 @@
 package com.screenlog.app.presentation.detail
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -8,11 +9,13 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,9 +34,22 @@ fun TitleDetailScreen(
     viewModel: TitleDetailViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    var flaggingReviewId by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(tmdbId) {
         viewModel.loadTitleDetails(titleType, tmdbId)
+    }
+
+    if (flaggingReviewId != null) {
+        FlagReviewDialog(
+            onDismiss = { flaggingReviewId = null },
+            onConfirm = { reason: String ->
+                viewModel.flagReview(flaggingReviewId!!, reason)
+                flaggingReviewId = null
+                Toast.makeText(context, "Review reported successfully", Toast.LENGTH_SHORT).show()
+            }
+        )
     }
 
     Scaffold(
@@ -228,7 +244,17 @@ fun TitleDetailScreen(
                                                     fontWeight = FontWeight.Bold,
                                                     style = MaterialTheme.typography.bodyMedium
                                                 )
-                                                RatingBar(rating = r.rating)
+                                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                                    RatingBar(rating = r.rating, starSize = 16)
+                                                    IconButton(onClick = { flaggingReviewId = r.id }) {
+                                                        Icon(
+                                                            imageVector = Icons.Default.Warning,
+                                                            contentDescription = "Flag Review",
+                                                            tint = MaterialTheme.colorScheme.error.copy(alpha = 0.6f),
+                                                            modifier = Modifier.size(16.dp)
+                                                        )
+                                                    }
+                                                }
                                             }
                                             Text(
                                                 text = r.reviewText,
@@ -245,4 +271,52 @@ fun TitleDetailScreen(
             }
         }
     }
+}
+
+@Composable
+fun FlagReviewDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit
+) {
+    val reasons = listOf("Inappropriate Content", "Spoilers", "Spam", "Harassment", "Other")
+    var selectedReason by remember { mutableStateOf(reasons[0]) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Report Review") },
+        text = {
+            Column {
+                Text("Select a reason for reporting this review:", style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(12.dp))
+                reasons.forEach { r ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = (r == selectedReason),
+                            onClick = { selectedReason = r }
+                        )
+                        Text(
+                            text = r,
+                            modifier = Modifier.padding(start = 8.dp),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onConfirm(selectedReason) }) {
+                Text("Report")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
 }

@@ -177,13 +177,14 @@ class TitleRepositoryImpl @Inject constructor(
         rating: Int,
         text: String,
         language: String,
-        containsSpoilers: Boolean
+        containsSpoilers: Boolean,
+        reviewId: String?
     ): Resource<Review> {
         return try {
             val uid = firebaseAuth.currentUser?.uid ?: throw Exception("Unauthorized")
             val userProfile = firestoreDataSource.getUserProfile(uid)
             val review = Review(
-                id = UUID.randomUUID().toString(),
+                id = reviewId ?: UUID.randomUUID().toString(),
                 userId = uid,
                 userName = userProfile.displayName,
                 titleId = titleId,
@@ -208,6 +209,15 @@ class TitleRepositoryImpl @Inject constructor(
             Resource.Success(Unit)
         } catch (e: Exception) {
             Resource.Error(e.message ?: "Failed to delete review")
+        }
+    }
+
+    override suspend fun flagReview(titleId: String, reviewId: String, reason: String): Resource<Unit> {
+        return try {
+            firestoreDataSource.flagReview(titleId, reviewId, reason)
+            Resource.Success(Unit)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Failed to flag review")
         }
     }
 

@@ -16,10 +16,11 @@ interface LogRepository {
         reviewText: String?,
         languageCode: String?,
         containsSpoilers: Boolean,
-        watchedDate: Long
+        watchedDate: Long,
+        logId: String? = null
     ): Resource<LogEntry>
     suspend fun syncPendingLogs(): Resource<Unit>
     suspend fun getLocalAndRemoteLogs(userId: String): Resource<List<LogEntry>>
-    suspend fun deleteLog(userId: String, logId: String): Resource<Unit>
+    suspend fun deleteLog(userId: String, logId: String, titleId: String? = null): Resource<Unit>
     suspend fun updateLog(log: LogEntry): Resource<LogEntry>
 }

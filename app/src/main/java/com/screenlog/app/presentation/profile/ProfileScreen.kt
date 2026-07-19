@@ -213,7 +213,7 @@ fun ProfileScreen(
                             }
                             Spacer(Modifier.width(8.dp))
                             TextButton(
-                                onClick = { viewModel.deleteLog(log.id) },
+                                onClick = { viewModel.deleteLog(log.id, log.titleId) },
                                 colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
                             ) {
                                 Icon(Icons.Default.Delete, contentDescription = null, modifier = Modifier.size(16.dp))

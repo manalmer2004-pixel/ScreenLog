@@ -97,10 +97,10 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun deleteLog(logId: String) {
+    fun deleteLog(logId: String, titleId: String) {
         val uid = firebaseAuth.currentUser?.uid ?: return
         viewModelScope.launch {
-            logRepository.deleteLog(uid, logId)
+            logRepository.deleteLog(uid, logId, titleId)
             // Analytics will update automatically via the flow
         }
     }

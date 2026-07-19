@@ -3,7 +3,9 @@ package com.screenlog.app.data.remote.firebase
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.screenlog.app.core.common.Constants
+import com.screenlog.app.domain.model.LocalRegistryEntry
 import com.screenlog.app.domain.model.LogEntry
 import com.screenlog.app.domain.model.Review
 import com.screenlog.app.domain.model.User
@@ -194,6 +196,7 @@ class FirestoreDataSource @Inject constructor(
 
     suspend fun submitReview(titleId: String, review: Review) {
         val reviewMap = hashMapOf(
+            "id" to review.id,
             "userId" to review.userId,
             "userName" to review.userName,
             "titleId" to titleId,
@@ -220,6 +223,39 @@ class FirestoreDataSource @Inject constructor(
             .document(reviewId)
             .delete()
             .await()
+    }
+
+    suspend fun flagReview(titleId: String, reviewId: String, reason: String) {
+        val updates = hashMapOf<String, Any>(
+            "flagged" to true,
+            "flagReason" to reason
+        )
+        firestore.collection(Constants.TITLES_COLLECTION)
+            .document(titleId)
+            .collection(Constants.REVIEWS_COLLECTION)
+            .document(reviewId)
+            .set(updates, SetOptions.merge())
+            .await()
+    }
+
+    suspend fun getLocalRegistry(): List<LocalRegistryEntry> {
+        val query = firestore.collection(Constants.LOCAL_REGISTRY_COLLECTION)
+            .get()
+            .await()
+
+        return query.documents.map { doc ->
+            LocalRegistryEntry(
+                registryId = doc.id,
+                titleName = doc.getString("titleName") ?: "",
+                countryCode = doc.getString("countryCode") ?: "KE",
+                year = doc.getLong("year")?.toInt() ?: 0,
+                type = doc.getString("type") ?: "movie",
+                tmdbId = doc.getString("tmdbId") ?: "",
+                source = doc.getString("source") ?: "",
+                isLocalContent = doc.getBoolean("isLocalContent") ?: true,
+                languages = (doc.get("languages") as? List<*>)?.mapNotNull { it as? String } ?: emptyList()
+            )
+        }
     }
 
     // Helper extension to await task results inside coroutines
