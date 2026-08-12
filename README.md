@@ -37,17 +37,17 @@ ScreenLog addresses this by combining:
 
 ## Features
 
-- 🔐 Email/password authentication (Firebase Auth)
-- 🔎 Title search via TMDB, with a "Local Content" filter toggle
-- 📝 Log watched movies/TV with star rating, review text, language, and spoiler flag
-- ❤️ Watchlist management
-- 🌍 Regional Discovery screen — "Locally Produced" and "Regionally Produced" carousels with a `KE / LOCAL` badge
-- 🎯 Personalized "For You" recommendations, generated server-side via a Firebase Cloud Function
-- 📊 Personal analytics dashboard (genres, countries, directors, rating distribution, monthly trend)
-- 🚩 Community review moderation (flag → moderator review → keep/remove)
-- 📴 Offline-first: all writes land in Room first and sync to Firestore in the background
-- 🌓 Light/dark theme toggle
-- 🛠️ Companion web admin console for moderation and local-registry curation
+- Email/password authentication (Firebase Auth)
+- Title search via TMDB, with a "Local Content" filter toggle
+- Log watched movies/TV with star rating, review text, language, and spoiler flag
+- Watchlist management
+- Regional Discovery screen — "Locally Produced" and "Regionally Produced" carousels with a `KE / LOCAL` badge
+- Personalized "For You" recommendations, generated server-side via a Firebase Cloud Function
+- Personal analytics dashboard (genres, countries, directors, rating distribution, monthly trend)
+- Community review moderation (flag → moderator review → keep/remove)
+- Offline-first: all writes land in Room first and sync to Firestore in the background
+- Light/dark theme toggle
+- Companion web admin console for moderation and local-registry curation
 
 ## Tech Stack
 
