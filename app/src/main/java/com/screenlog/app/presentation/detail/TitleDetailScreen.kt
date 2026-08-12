@@ -3,6 +3,7 @@ package com.screenlog.app.presentation.detail
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -14,6 +15,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -93,6 +95,29 @@ fun TitleDetailScreen(
                                     .fillMaxWidth()
                                     .height(200.dp)
                             )
+                        } else if (!title.posterPath.isNullOrBlank()) {
+                            // Fallback for local-only titles with no backdrop, only a poster
+                            val posterUrl = if (title.posterPath.startsWith("http")) {
+                                title.posterPath
+                            } else {
+                                "${Constants.TMDB_IMAGE_BASE_URL}${title.posterPath}"
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                                    .padding(16.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                AsyncImage(
+                                    model = posterUrl,
+                                    contentDescription = "Poster",
+                                    contentScale = ContentScale.Fit,
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .clip(RoundedCornerShape(8.dp))
+                                )
+                            }
                         }
 
                         Column(modifier = Modifier.padding(16.dp)) {
@@ -106,7 +131,7 @@ fun TitleDetailScreen(
                                     style = MaterialTheme.typography.headlineMedium,
                                     fontWeight = FontWeight.Bold
                                 )
-                                
+
                                 if (title.isLocalContent) {
                                     LocalContentBadge()
                                 }

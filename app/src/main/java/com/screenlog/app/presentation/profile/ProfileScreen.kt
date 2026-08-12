@@ -71,7 +71,8 @@ fun ProfileScreen(
         // User profile Card
         state.user?.let { user ->
             Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                colors = CardDefaults.cardColors(containerColor =
+                    MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {

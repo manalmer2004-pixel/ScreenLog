@@ -9,7 +9,6 @@ fun UserEntity.toDomain(): User {
         displayName = displayName,
         email = email,
         homeCountry = homeCountry,
-        photoUrl = photoUrl,
         createdAt = createdAt,
         updatedAt = updatedAt,
         isModerator = isModerator
@@ -22,7 +21,6 @@ fun User.toEntity(): UserEntity {
         displayName = displayName,
         email = email,
         homeCountry = homeCountry,
-        photoUrl = photoUrl,
         createdAt = createdAt,
         updatedAt = updatedAt,
         isModerator = isModerator

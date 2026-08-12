@@ -47,7 +47,8 @@ fun RatingDistributionChart(distribution: Map<Int, Int>) {
                     .weight(1f)
                     .fillMaxHeight(heightPercent.coerceAtLeast(0.1f))
                     .clip(RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp))
-                    .background(if (count > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f))
+                    .background(if (count > 0) MaterialTheme.colorScheme.primary else
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f))
             )
         }
     }

@@ -5,7 +5,6 @@ data class User(
     val displayName: String,
     val email: String,
     val homeCountry: String,
-    val photoUrl: String?,
     val createdAt: Long,
     val updatedAt: Long,
     val isModerator: Boolean

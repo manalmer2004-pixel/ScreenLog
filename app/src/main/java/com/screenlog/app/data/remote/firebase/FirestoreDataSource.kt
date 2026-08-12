@@ -24,7 +24,6 @@ class FirestoreDataSource @Inject constructor(
             "displayName" to user.displayName,
             "email" to user.email,
             "homeCountry" to user.homeCountry,
-            "photoUrl" to user.photoUrl,
             "createdAt" to user.createdAt,
             "updatedAt" to user.updatedAt,
             "isModerator" to user.isModerator
@@ -45,7 +44,6 @@ class FirestoreDataSource @Inject constructor(
             displayName = doc.getString("displayName") ?: "",
             email = doc.getString("email") ?: "",
             homeCountry = doc.getString("homeCountry") ?: "KE",
-            photoUrl = doc.getString("photoUrl"),
             createdAt = doc.getLong("createdAt") ?: System.currentTimeMillis(),
             updatedAt = doc.getLong("updatedAt") ?: System.currentTimeMillis(),
             isModerator = doc.getBoolean("isModerator") ?: false
@@ -253,7 +251,11 @@ class FirestoreDataSource @Inject constructor(
                 tmdbId = doc.getString("tmdbId") ?: "",
                 source = doc.getString("source") ?: "",
                 isLocalContent = doc.getBoolean("isLocalContent") ?: true,
-                languages = (doc.get("languages") as? List<*>)?.mapNotNull { it as? String } ?: emptyList()
+                languages = (doc.get("languages") as? List<*>)?.mapNotNull { it as? String } ?: emptyList(),
+                genres = (doc.get("genres") as? List<*>)?.mapNotNull { it as? String } ?: emptyList(),
+                director = doc.getString("director") ?: "",
+                synopsis = doc.getString("synopsis") ?: "",
+                posterUrl = doc.getString("posterUrl") ?: ""
             )
         }
     }

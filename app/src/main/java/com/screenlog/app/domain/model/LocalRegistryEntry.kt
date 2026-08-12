@@ -9,5 +9,9 @@ data class LocalRegistryEntry(
     val tmdbId: String,
     val source: String,
     val isLocalContent: Boolean,
-    val languages: List<String>
+    val languages: List<String>,
+    val genres: List<String> = emptyList(),
+    val director: String = "",
+    val synopsis: String = "",
+    val posterUrl: String = ""
 )

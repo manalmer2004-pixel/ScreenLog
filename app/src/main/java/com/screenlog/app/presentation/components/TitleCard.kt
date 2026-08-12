@@ -36,8 +36,13 @@ fun TitleCard(
                     .fillMaxWidth()
             ) {
                 if (!title.posterPath.isNullOrBlank()) {
+                    val imageUrl = if (title.posterPath.startsWith("http")) {
+                        title.posterPath
+                    } else {
+                        "${Constants.TMDB_IMAGE_BASE_URL}${title.posterPath}"
+                    }
                     AsyncImage(
-                        model = "${Constants.TMDB_IMAGE_BASE_URL}${title.posterPath}",
+                        model = imageUrl,
                         contentDescription = title.name,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -45,7 +50,7 @@ fun TitleCard(
                             .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
                     )
                 }
-                
+
                 if (title.isLocalContent) {
                     Box(
                         modifier = Modifier
@@ -56,7 +61,7 @@ fun TitleCard(
                     }
                 }
             }
-            
+
             Column(
                 modifier = Modifier
                     .padding(8.dp)
@@ -69,7 +74,7 @@ fun TitleCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                
+
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
@@ -83,7 +88,7 @@ fun TitleCard(
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
-                    
+
                     if (title.averageRating > 0) {
                         Text(
                             text = "★ %.1f".format(title.averageRating),

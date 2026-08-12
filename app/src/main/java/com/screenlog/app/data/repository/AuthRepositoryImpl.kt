@@ -36,7 +36,6 @@ class AuthRepositoryImpl @Inject constructor(
                     displayName = firebaseUser.displayName ?: "",
                     email = firebaseUser.email ?: "",
                     homeCountry = "KE",
-                    photoUrl = firebaseUser.photoUrl?.toString(),
                     createdAt = System.currentTimeMillis(),
                     updatedAt = System.currentTimeMillis(),
                     isModerator = false
@@ -69,7 +68,6 @@ class AuthRepositoryImpl @Inject constructor(
                 displayName = displayName,
                 email = email,
                 homeCountry = homeCountry,
-                photoUrl = null,
                 createdAt = System.currentTimeMillis(),
                 updatedAt = System.currentTimeMillis(),
                 isModerator = false

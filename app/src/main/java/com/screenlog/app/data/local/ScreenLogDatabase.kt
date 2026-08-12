@@ -17,7 +17,7 @@ import com.screenlog.app.data.local.entity.*
         RecommendationEntity::class,
         RegionEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
